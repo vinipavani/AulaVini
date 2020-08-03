@@ -21,18 +21,18 @@
   </div>
   <form *ngIf='!editMode'(ngSubmit)="sendComment(commentForm)" [formGroup]="commentForm">
     <h2>Faça um comentário</h2>
-    <ion-textarea formControlName="mensagem" class="comentario"></ion-textarea>
+    <ion-textarea formControlName="text" class="comentario"></ion-textarea>
     <div class="botao">
       <ion-button [disabled]="!commentForm.valid" type='submit'>Comentar</ion-button>
     </div>
   </form>
   <form *ngIf='editMode' (ngSubmit)="sendEditComment(editCommentForm)" [formGroup]="editCommentForm">
     <h2>Edite seu comentario</h2>
-    <ion-textarea formControlName="mensagem" class="comentario"></ion-textarea>
+    <ion-textarea formControlName="text" class="comentario"></ion-textarea>
     <div class="botao">
       <ion-button [disabled]="editCommentForm.invalid" type='submit'>Editar</ion-button>
     </div>
   </form>
   <h2>Comentários</h2>
-  <app-comentario (trashClicked)='deleteComment($event)' (editClicked)='toggleEdit($event)' [comentario]='comentario' *ngFor='let comentario of comentarios'></app-comentario>
+  <app-comentario (trashClicked)='deleteComment($event)' (editClicked)='toggleEdit($event)' [comentario]='comment' *ngFor='let comment of comments'></app-comentario>
 </ion-content>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-republica',
@@ -13,37 +12,37 @@ export class RepublicaPage implements OnInit {
   editCommentForm: FormGroup;
   editMode = false;
 
-  comentarios = [];
+  comments = [];
 
   constructor( public formbuilder: FormBuilder ) { 
     this.commentForm = this.formbuilder.group({
-      mensagem: [null, [Validators.required, Validators.maxLength(140)]],
+      text: [null, [Validators.required, Validators.maxLength(140)]],
     });
     this.editCommentForm = this.formbuilder.group({
-      mensagem: [null, [Validators.required, Validators.maxLength(140)]],
+      text: [null, [Validators.required, Validators.maxLength(140)]],
     });
   }
 
   ngOnInit() {
-    this.comentarios = [{
+    this.comments = [{
       id: 1,
       username: 'Kujo Jotaro',
-      mensagem: 'Oraoraoraoraoraoraororaoraoraoraoroaroarraoao!'
+      text: 'Oraoraoraoraoraoraororaoraoraoraoroaroarraoao!'
     },
     {
       id: 2,
       username: 'Josuke Higashikata',
-      mensagem: 'Dorarararararararararararara!'
+      text: 'Dorarararararararararararara!'
     },
     {
       id: 3,
       username: 'Joseph Joestar',
-      mensagem: 'Oh my god!!!'
+      text: 'Oh my god!!!'
     },
     {
       id: 4,
       username: 'Giorno Giovanna',
-      mensagem: 'Mudamudamudamudamudamudamuda!'
+      text: 'Mudamudamudamudamudamudamuda!'
     }];
   }
 
