@@ -99,9 +99,11 @@ export class RepublicaPage implements OnInit {
     this.commentService.deleteComment(id).subscribe(
       (res)=>{
         console.log(res);
+        alert(res[0]);
         this.showRepublicWithComments(this.republic_id);
       },(err) =>{
         console.log(err);
+        alert(err.error[0]);
       }
     );
   }
