@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { stringify } from 'querystring';
+import { CommentService } from '../services/comment.service';
 
 @Component({
   selector: 'app-republica',
@@ -13,58 +13,97 @@ export class RepublicaPage implements OnInit {
   editCommentForm: FormGroup;
   editMode = false;
 
-  comentarios = [];
+  republic: any;
+  republic_id: number;
+  comments = [];
+  textComment: string = '';
+  comment_id: number;
 
-  constructor( public formbuilder: FormBuilder ) { 
+  constructor( 
+    public formbuilder: FormBuilder, 
+    public commentService: CommentService,) 
+  { 
+    this.republic_id = JSON.parse(localStorage.getItem('republica')).id;
+
     this.commentForm = this.formbuilder.group({
-      mensagem: [null, [Validators.required, Validators.maxLength(140)]],
+      text: [null, [Validators.required, Validators.maxLength(140)]],
     });
     this.editCommentForm = this.formbuilder.group({
-      mensagem: [null, [Validators.required, Validators.maxLength(140)]],
+      text: [null, [Validators.required, Validators.maxLength(140)]],
     });
   }
 
   ngOnInit() {
-    this.comentarios = [{
-      id: 1,
-      username: 'Kujo Jotaro',
-      mensagem: 'Oraoraoraoraoraoraororaoraoraoraoroaroarraoao!'
-    },
-    {
-      id: 2,
-      username: 'Josuke Higashikata',
-      mensagem: 'Dorarararararararararararara!'
-    },
-    {
-      id: 3,
-      username: 'Joseph Joestar',
-      mensagem: 'Oh my god!!!'
-    },
-    {
-      id: 4,
-      username: 'Giorno Giovanna',
-      mensagem: 'Mudamudamudamudamudamudamuda!'
-    }];
+    this.showRepublicWithComments(this.republic_id);
   }
 
   sendComment(form){
+    form.value.republic_id = JSON.parse(localStorage.getItem('republica')).id;
+    form.value.username = localStorage.getItem('username');
     console.log(form);
     console.log(form.value);
+    this.commentService.createComment(form.value).subscribe(
+      (res)=>{ 
+        console.log(res); 
+        this.commentForm.reset();
+        this.showRepublicWithComments(this.republic_id);
+      },
+      (err)=>{
+        console.log(err);
+      }
+    );
+  }
+
+  showRepublicWithComments(republic_id){
+    this.commentService.showRepublicWithComments(republic_id).subscribe(
+      (res)=>{ 
+        console.log(res); 
+        this.republic = res.republic;
+        console.log(this.republic); 
+        this.comments = res.comments;
+        console.log(this.comments); 
+      },
+      (err)=>{
+        console.log(err);
+      }
+    );
   }
 
   sendEditComment(form){
     console.log(form);
     console.log(form.value);
     this.editMode = false;
+    this.commentService.updateComment(this.comment_id, form.value).subscribe(
+      (res) => {
+        console.log(res);
+        this.textComment = '';
+        this.editCommentForm.reset();
+        this.showRepublicWithComments(this.republic_id);
+      },(err) => {
+        console.log(err);
+      } 
+    );
   }
 
   toggleEdit(id){
+    this.comment_id = id;
+    for( let comment of this.comments ){  
+      if (comment.id == id){
+        this.textComment = comment.text;
+      }
+    }
     this.editMode = true;
-    console.log(id)
   }
 
   deleteComment(id){
-    console.log('Mais que cancelado: ' + id);
+    this.commentService.deleteComment(id).subscribe(
+      (res)=>{
+        console.log(res);
+        this.showRepublicWithComments(this.republic_id);
+      },(err) =>{
+        console.log(err);
+      }
+    );
   }
 
 }
