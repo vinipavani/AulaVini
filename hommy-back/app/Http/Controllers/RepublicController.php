@@ -23,6 +23,14 @@ class RepublicController extends Controller
         return response()->json($republic);
     }
 
+    public function showRepublicWithComments($id){
+        $resposta = [];
+        $republic = Republic::findOrFail($id);
+        $comments = Republic::findOrFail($id)->comments()->get();
+        array_push( $resposta, ["republic" => $republic, "comments" => $comments] );
+        return response()->json($resposta[0]);
+    }
+
     public function listRepublic(Request $request){
         $republic = Republic::all();
         return response()->json($republic);

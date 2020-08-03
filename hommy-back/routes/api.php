@@ -8,6 +8,7 @@ Route::post('createRepublic', 'RepublicController@createRepublic');
 Route::get('showRepublic/{id}', 'RepublicController@showRepublic');
 Route::get('listRepublic', 'RepublicController@listRepublic');
 Route::get('getRepublicByName/{name}', 'RepublicController@getRepublicByName');
+Route::get('showRepublicWithComments/{id}', 'RepublicController@showRepublicWithComments');
 Route::put('updateRepublic/{id}', 'RepublicController@updateRepublic');
 Route::put('addUser/{id}/{republic_id}', 'RepublicController@addUser');
 Route::put('removeUser/{republic_id}', 'RepublicController@removeUser');
